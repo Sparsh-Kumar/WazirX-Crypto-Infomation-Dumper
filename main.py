@@ -56,6 +56,7 @@ def main():
                 })
                 if not isAlreadyExists:
                     collectionHandle.insert_one(info)
+                    print(info)
             mongoClient.close()
         time.sleep(60)
 
