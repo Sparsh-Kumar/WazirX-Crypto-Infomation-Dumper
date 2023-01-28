@@ -57,7 +57,7 @@ def main():
                 if not isAlreadyExists:
                     collectionHandle.insert_one(info)
             mongoClient.close()
-        time.sleep()
+        time.sleep(60)
 
 
 if __name__ == '__main__':
