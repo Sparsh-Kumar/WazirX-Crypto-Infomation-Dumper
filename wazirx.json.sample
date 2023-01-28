@@ -1,5 +1,8 @@
 {
   "baseURI": "https://api.wazirx.com/sapi/v1",
   "ApiKey": "{{YOUR_API_KEY}}",
-  "SecretKey": "{{YOUR_SECRET_KEY}}"
+  "SecretKey": "{{YOUR_SECRET_KEY}}",
+  "DbURI": "{{MONGO_DB_URI}}",
+  "DbName": "{{DATABASE_NAME}}",
+  "DbCollectionName": "{{DATABASE_COLLECTION_NAME}}"
 }
