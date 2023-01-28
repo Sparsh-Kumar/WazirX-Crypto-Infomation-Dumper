@@ -1,5 +1,7 @@
 import sys
 import json
+import time
+import pandas as pd
 from logger import Logger
 from loadenv import loadEnvironmentVariables
 from request import Requests
@@ -17,7 +19,9 @@ class SyncData(WazirXHelper):
             kLineDataBefore1Min = json.loads(
                 self.kLineDataBeforeXMin(symbol, None, 1).content
             )
-            print(kLineDataBefore1Min)
+            for data in kLineDataBefore1Min:
+                data[0] = str(pd.to_datetime(data[0], unit='s'))
+            return kLineDataBefore1Min
         except Exception as e:
             self.loggerInstance.logError(str(e))
             sys.exit()
@@ -30,7 +34,10 @@ def main():
         'X-API-KEY': jsonEnvContent['ApiKey']
     })
     syncData = SyncData(jsonEnvContent, requestInstance, loggerInstance)
-    syncData.loadOneMinuteData('shibinr')
+    while True:
+        cryptoInfo = syncData.loadOneMinuteData('shibinr')
+        # Dump Data to mongodb
+        time.sleep(60)
 
 
 if __name__ == '__main__':
