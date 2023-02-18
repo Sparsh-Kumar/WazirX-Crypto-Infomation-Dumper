@@ -1,3 +1,4 @@
+import argparse
 import sys
 import json
 import time
@@ -38,6 +39,15 @@ class SyncData(WazirXHelper):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Syncing Crypto Information On Remote Database.',
+    )
+    parser.add_argument('-t', action='store',
+                        dest='ticker', help='Ticker Name')
+    args = parser.parse_args()
+    if not args.ticker:
+        print(' [-] Ticker is required.\n [-] Exiting ...')
+        sys.exit(3)
     loggerInstance = Logger()
     jsonEnvContent = loadEnvironmentVariables(loggerInstance, 'wazirx.json')
     requestInstance = Requests(jsonEnvContent['baseURI'], {
@@ -45,7 +55,7 @@ def main():
     })
     syncData = SyncData(jsonEnvContent, requestInstance, loggerInstance)
     while True:
-        cryptoInfo = syncData.loadOneMinuteData('shibinr')
+        cryptoInfo = syncData.loadOneMinuteData(args.ticker)
         if len(cryptoInfo):
             mongoClient = MongoClient(jsonEnvContent['DbURI'])
             databaseHandle = mongoClient[jsonEnvContent['DbName']]
